@@ -1,70 +1,95 @@
-# Getting Started with Create React App
+# Matrix Calculator
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)
+![React](https://img.shields.io/badge/React-17-61DAFB?logo=react&logoColor=black)
+![Create React App](https://img.shields.io/badge/Create%20React%20App-4.0.3-09D3AC?logo=createreactapp&logoColor=white)
 
-## Available Scripts
+A React-based graphic matrix calculator focused on 3D transformation matrices, built with Create React App.
 
-In the project directory, you can run:
+## Overview
 
-### `yarn start`
+This project (internal package name `matrix-graphic-calculator`) is a React single-page application scaffolded with Create React App. Its core logic lives in a matrix-solver utility that works with **4x4 homogeneous transformation matrices** — the standard representation used in 3D computer graphics to combine rotation and translation in a single matrix.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+> **Project status:** Early stage / work in progress. The React front end is currently the default Create React App starter page, while the matrix math is being developed in `src/utils/3d-matrix-solver.js`. The transformation-matrix templates below are implemented today; the interactive UI has not yet been wired up to them.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## What the code actually does
 
-### `yarn test`
+The matrix solver utility (`src/utils/3d-matrix-solver.js`) currently defines and prints 3D transformation matrix templates:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **Rotation about the X axis** (`Rx`) — a 4x4 rotation matrix parameterized by an angle in degrees.
+- **Rotation about the Y axis** (`Ry`) — a 4x4 rotation matrix parameterized by an angle in degrees.
+- **Rotation about the Z axis** (`Rz`) — a 4x4 rotation matrix parameterized by an angle in degrees.
+- **Translation** (`T`) — a 4x4 homogeneous translation matrix template.
+- **Matrix printing** (`printMatrix`) — a helper that logs each row of a 4x4 matrix to the console.
 
-### `yarn build`
+Angles are supplied in degrees and converted to radians internally (`angle * Math.PI / 180`) before being passed to `Math.sin` / `Math.cos`.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Example: rotation about the Z axis
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```javascript
+const angleC = 77;
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+const Rz = [
+    [Math.cos(angleC * Math.PI / 180), -Math.sin(angleC * Math.PI / 180), 0, 0],
+    [Math.sin(angleC * Math.PI / 180),  Math.cos(angleC * Math.PI / 180), 0, 0],
+    [0, 0, 1, 0],
+    [0, 0, 0, 1]
+];
 
-### `yarn eject`
+printMatrix(Rz);
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## Tech Stack
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+- **React 17** (`react`, `react-dom`)
+- **Create React App** / `react-scripts` 4.0.3 (build tooling and dev server)
+- **JavaScript (ES6+)**
+- **web-vitals** for performance metrics
+- **Testing Library** (`@testing-library/react`, `/jest-dom`, `/user-event`) for tests
+- **nodemon** (dev dependency)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Getting Started
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Prerequisites
 
-## Learn More
+- [Node.js](https://nodejs.org/) and a package manager. This repository ships a `yarn.lock`, so Yarn is recommended, but npm works as well.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Installation
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```bash
+git clone https://github.com/AckerCoder/matrix-calculator.git
+cd matrix-calculator
+yarn install     # or: npm install
+```
 
-### Code Splitting
+## Usage
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+The following scripts are defined in `package.json`:
 
-### Analyzing the Bundle Size
+| Command | Description |
+| --- | --- |
+| `yarn start` | Runs the app in development mode at [http://localhost:3000](http://localhost:3000). |
+| `yarn build` | Builds the app for production into the `build` folder. |
+| `yarn test` | Launches the test runner in interactive watch mode. |
+| `yarn eject` | Ejects the Create React App configuration (one-way operation). |
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+(Replace `yarn` with `npm run` if you prefer npm, e.g. `npm start`, `npm run build`.)
 
-### Making a Progressive Web App
+## Project Structure
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```
+matrix-calculator/
+├── public/                     # Static assets and HTML entry point
+├── src/
+│   ├── utils/
+│   │   └── 3d-matrix-solver.js # 3D transformation matrix templates & helpers
+│   ├── App.js                  # Root React component
+│   ├── index.js                # React entry point
+│   └── ...                     # CRA boilerplate (tests, styles, web-vitals)
+├── package.json
+└── yarn.lock
+```
 
-### Advanced Configuration
+## License
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+No license file is currently included in this repository.
